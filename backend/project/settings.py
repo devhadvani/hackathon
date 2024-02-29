@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-75i2=bw#1mqkqa26#@2j$_nej48k%^-!yvpcm+*^y2gygw(5qg'
+SECRET_KEY = 'django-insecure-@%@at$zn+k8#5r#j3%(aeh9)0i*w@c-w5r@cqxkxxez!@!+8u-'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,11 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'corsheaders',
+         'corsheaders',
     'rest_framework',
     "rest_framework_simplejwt",
     'djoser',
-    'app'
+    'app',
 ]
 
 MIDDLEWARE = [
@@ -54,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 CORS_ORIGIN_ALLOW_ALL = True
 ROOT_URLCONF = 'project.urls'
 
@@ -128,8 +129,8 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AUTH_USER_MODEL = 'app.User'
 
+AUTH_USER_MODEL = 'app.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -180,3 +181,14 @@ DEFAULT_FROM_EMAIL = "info@journal-bullet.com"
 DOMAIN = "localhost:3000"
 SITE_NAME = "Journal Bullet"
 
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = "smtp.gmail.com"
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = "devhadvani147@gmail.com"  # Replace with your Gmail address
+# EMAIL_HOST_PASSWORD = "Devhadvani@@1"  # Replace with your Gmail password
+# DEFAULT_FROM_EMAIL = "devhadvani147@gmail.com"  # Replace with your Gmail address
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1022299590961-bdlphuf5ffkg3aq0njlul2ikn0d37d1k.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
