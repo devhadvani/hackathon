@@ -1,20 +1,23 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
+import { useLocation } from "react-router-dom";
 const LoginPage = () => {
+
+    const location = useLocation();
+    const activate_msg = location.state;
+  console.log(activate_msg)
     const [formData, setFormData] = useState({
         email: '',
         password: ''
     });
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false); 
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Check if the user is already logged in
-        const token = localStorage.getItem('token'); // Assuming you're storing the token in localStorage
+        const token = localStorage.getItem('token');
         if (token) {
-            // Redirect the user to the dashboard or any other authorized page
             navigate('/dashboard');
         }
     }, [navigate]);
@@ -27,6 +30,7 @@ const LoginPage = () => {
         e.preventDefault();
 
         try {
+            setLoading(true);
             const response = await axios.post('http://127.0.0.1:8000/api/v1/auth/jwt/create/', formData);
             console.log('Login successful', response.data);
             
@@ -43,32 +47,39 @@ const LoginPage = () => {
                 console.error('Login failed', error.message);
                 setError('An error occurred during login.');
             }
+        } finally {
+            setLoading(false); // Set loading to false when login process ends
         }
     };
 
     return (
         <div className="container auth__container">
             <h1 className="main__title">Login</h1>
+    
+            {activate_msg && <p className="error-message">successful</p>}
             {error && <p className="error-message">{error}</p>}
-            <form className="auth__form">
-                <input
-                    type="text"
-                    placeholder="Email"
-                    name="email"
-                    onChange={handleChange}
-                    value={formData.email}
-                    required
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    name="password"
-                    onChange={handleChange}
-                    value={formData.password}
-                    required
-                />
-                <button className="btn btn-primary" type="submit" onClick={handleSubmit}>Login</button>
-            </form>
+            {loading && <p className="spinner"></p>}
+
+                <form className="auth__form">
+                    <input
+                        type="text"
+                        placeholder="Email"
+                        name="email"
+                        onChange={handleChange}
+                        value={formData.email}
+                        required
+                    />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        name="password"
+                        onChange={handleChange}
+                        value={formData.password}
+                        required
+                    />
+                    <button className="btn btn-primary" type="submit" onClick={handleSubmit}>Login</button>
+                </form>
+            
         </div>
     );
 };
