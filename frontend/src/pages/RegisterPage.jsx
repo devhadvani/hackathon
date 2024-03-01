@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import LoginPage from './LoginPage';
 
 
 const RegisterPage = () => {
@@ -13,12 +14,13 @@ const RegisterPage = () => {
     });
     const [fieldErrors, setFieldErrors] = useState({});
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false); 
     const navigate = useNavigate();
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
             // If token exists, user is already logged in, redirect to dashboard
-            // navigate('/dashboard');
+            navigate('/dashboard');
         }
     }, [navigate]);
     const handleChange = (e) => {
@@ -27,8 +29,9 @@ const RegisterPage = () => {
    
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         try {
+            setLoading(true);
             const response = await axios.post('http://127.0.0.1:8000/api/v1/auth/users/', {
                 email: formData.email,
                 first_name: formData.first_name, // Add first_name field
@@ -37,16 +40,18 @@ const RegisterPage = () => {
                 re_password: formData.re_password
             });
             console.log('Registration successful', response.data);
-            // navigate("/login");
+            // setLoginInfo(true);
+            navigate("/login", { state: true });
+            // Navigate to login page after successful registration
         } catch (error) {
             console.error("Error setting up the request:", error.response);
             if (error.response && error.response.data) {
                 const errorData = error.response.data;
                 console.error('Registration failed', errorData);
-
+    
                 // Set field-specific error messages
                 setFieldErrors(errorData);
-
+    
                 // Set the general error message
                 setError('An error occurred during registration.');
             } else {
@@ -54,11 +59,16 @@ const RegisterPage = () => {
                 setError('An error occurred during registration.');
             }
         }
+        finally{
+            setLoading(false);
+        }
     };
 
     return (
         <div className="container auth__container">
+
             <h1 className="main__title">Register</h1>
+            {loading && <p className="spinner"></p>}
             {error && <p className="error-message">{error}</p>}
             {fieldErrors.non_field_errors && <p className="error-message">{fieldErrors.non_field_errors[0]}</p>}
             <form className="auth__form">
