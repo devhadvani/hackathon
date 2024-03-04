@@ -15,7 +15,10 @@ const RegisterPage = () => {
     const [fieldErrors, setFieldErrors] = useState({});
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false); 
+
     const navigate = useNavigate();
+
+    
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
@@ -41,7 +44,7 @@ const RegisterPage = () => {
             });
             console.log('Registration successful', response.data);
             // setLoginInfo(true);
-            navigate("/login", { state: true });
+            navigate("/login", { state: "Registration activation link sended to your email" });
             // Navigate to login page after successful registration
         } catch (error) {
             console.error("Error setting up the request:", error.response);

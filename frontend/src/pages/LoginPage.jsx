@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate } from 'react-router-dom';
 import { useLocation } from "react-router-dom";
 const LoginPage = () => {
 
     const location = useLocation();
     const activate_msg = location.state;
-  console.log(activate_msg)
+//   console.log(activate_msg)
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -56,7 +56,7 @@ const LoginPage = () => {
         <div className="container auth__container">
             <h1 className="main__title">Login</h1>
     
-            {activate_msg && <p className="error-message">successful</p>}
+            {activate_msg && <p className="error-message">successful{activate_msg}</p>}
             {error && <p className="error-message">{error}</p>}
             {loading && <p className="spinner"></p>}
 
@@ -78,6 +78,7 @@ const LoginPage = () => {
                         required
                     />
                     <button className="btn btn-primary" type="submit" onClick={handleSubmit}>Login</button>
+                    <Link to="/reset-password">Forget Password ?</Link>
                 </form>
             
         </div>

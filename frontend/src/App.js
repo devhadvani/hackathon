@@ -6,7 +6,8 @@ import LoginPage from './pages/LoginPage';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Dashboard from './pages/Dashborad';
 import Nav from './pages/Nav';
-
+import ResetPasswordPageConfirm from './pages/ResetPasswordPageConfirm';
+import ResetPasswordForm from './pages/ResetPasswordPage';
 function App() {
   return (
     <Router>
@@ -19,6 +20,8 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/activate/:uid/:token" element={<ActivatePage />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/reset-password" element={<ResetPasswordForm />} />
+          <Route path="/password/reset/confirm/:uid/:token" element={<ResetPasswordPageConfirm />} />
           {/* Add other routes */}
         </Routes>
       </>
