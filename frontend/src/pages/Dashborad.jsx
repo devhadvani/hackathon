@@ -54,6 +54,7 @@ const Dashboard = () => {
             ) : userInfo ? (
                 <div>
                     <p>Logged in as: {userInfo.email}</p>
+                    <p>User ID: {userInfo.id}</p>
                     {/* Display other user info as needed */}
                 </div>
             ) : (

@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashborad';
 import Nav from './pages/Nav';
 import ResetPasswordPageConfirm from './pages/ResetPasswordPageConfirm';
 import ResetPasswordForm from './pages/ResetPasswordPage';
+import ProfileForm from './pages/ProfileForm';
 function App() {
   return (
     <Router>
@@ -20,6 +21,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/activate/:uid/:token" element={<ActivatePage />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/create-profile" element={<ProfileForm />} />
           <Route path="/reset-password" element={<ResetPasswordForm />} />
           <Route path="/password/reset/confirm/:uid/:token" element={<ResetPasswordPageConfirm />} />
           {/* Add other routes */}

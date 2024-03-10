@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
+from django.contrib.auth import get_user_model
 # Create your models here.
 class CustomUserManager(BaseUserManager):
 
@@ -98,3 +99,18 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
+
+User = get_user_model()
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+    skills = models.JSONField(_("Skills"), default=list)
+    is_student = models.BooleanField(_("Is Student"), default=False)
+    college_name = models.CharField(_("College Name"), max_length=100, blank=True, null=True)
+    college_level = models.CharField(_("College Level"), max_length=20, blank=True, null=True)
+    is_professional = models.BooleanField(_("Is Professional"), default=False)
+    company_name = models.CharField(_("Company Name"), max_length=100, blank=True, null=True)
+    career_start_date = models.DateField(_("Career Start Date"), blank=True, null=True)
+
+    def __str__(self):
+        return self.user.email
