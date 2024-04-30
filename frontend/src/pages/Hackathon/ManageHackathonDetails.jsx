@@ -15,7 +15,7 @@ const ManageHackathonDetails = () => {
       try {
         const participantsResponse = await axios.get(`http://127.0.0.1:8000/api/v1/hackathons/${id}/participate`);
         const projectsResponse = await axios.get(`http://127.0.0.1:8000/api/v1/hackathons/${id}/projects/`);
-
+        console.log(participantsResponse)
         setParticipants(participantsResponse.data);
         setProjects(projectsResponse.data);
         setLoading(false);
@@ -40,6 +40,7 @@ const ManageHackathonDetails = () => {
             <div className="participant-info">
               <p><strong>User:</strong> {participant.user.first_name} {participant.user.email}</p>
               <p><strong>Participation Type:</strong> {participant.participation_type}</p>
+              <p>{participant.team}</p>
               {participant.team_members && participant.team_members.length > 0 && (
                 <div className="team-members">
                   <h3>Team Members:</h3>

@@ -33,4 +33,5 @@ urlpatterns = [
     path("profile/<int:pk>/", views.ProfileDetail.as_view()),
     path("search/<username>/", views.SearchUser.as_view()),
     path('unread-message-counts/<int:user_id>/', views.unread_message_counts, name='unread_message_counts'),
+    path('api/hackathons/<int:pk>/results/', views.HackathonResultAPIView.as_view(), name='hackathon-results'),
 ]

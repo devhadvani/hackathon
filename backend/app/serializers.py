@@ -80,3 +80,8 @@ class MessageSerializer(serializers.ModelSerializer):
             self.Meta.depth = 0
         else:
             self.Meta.depth = 2
+
+class HackathonResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Hackathon
+        fields = ['first_place_team', 'second_place_team', 'third_place_team']

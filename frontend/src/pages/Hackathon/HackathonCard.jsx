@@ -6,7 +6,7 @@ const HackathonCard = ({ hackathon }) => {
   const tags = hackathon.tags.split(', ');
 
   return (
-        <Link to={`/hackathons/${hackathon.id}`} className="card-link">
+        // <Link to={`/hackathons/${hackathon.id}`} className="card-link">
     <article className="card">
         {/* <div className="header"> */}
           {/* <img className="thumbnail" src={hackathon.front_image} alt="thumbnail" /> */}
@@ -49,7 +49,7 @@ const HackathonCard = ({ hackathon }) => {
           </div>
         </div>
       </article>
-      </Link>
+      // </Link>
   );
 };
 

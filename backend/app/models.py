@@ -116,6 +116,11 @@ class UserProfile(models.Model):
         return self.user.email
 
 
+class Team(models.Model):
+    hackathon = models.ForeignKey('Hackathon', on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+
+
 
 class Hackathon(models.Model):
     title = models.CharField(max_length=255)
@@ -140,6 +145,9 @@ class Hackathon(models.Model):
     tags = models.CharField(max_length=255)
     front_image = models.ImageField(upload_to='hackathon/images/',blank=True,null=True)
     banner_image = models.ImageField(upload_to='hackathon/images/',blank=True,null=True)
+    first_place_team = models.ForeignKey(Team, on_delete=models.SET_NULL, related_name='first_place_hackathons', blank=True, null=True)
+    second_place_team = models.ForeignKey(Team, on_delete=models.SET_NULL, related_name='second_place_hackathons', blank=True, null=True)
+    third_place_team = models.ForeignKey(Team, on_delete=models.SET_NULL, related_name='third_place_hackathons', blank=True, null=True)
 
 
     def __str__(self):
@@ -157,9 +165,6 @@ class HackathonParticipant(models.Model):
     has_created_team = models.BooleanField(default=False)
     participation_type = models.CharField(max_length=10, choices=PARTICIPATION_TYPE_CHOICES)
 
-class Team(models.Model):
-    hackathon = models.ForeignKey(Hackathon, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
 
 class TeamMember(models.Model):
     ROLE_CHOICES = [
@@ -181,8 +186,6 @@ class Project(models.Model):
     live_website_link = models.URLField(null=True, blank=True)
     team = models.ForeignKey('Team', on_delete=models.CASCADE, null=True)
 
-class Result(models.Model):
-    
 
 
 class ChatMessage(models.Model):

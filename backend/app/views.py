@@ -2,7 +2,7 @@ from django.shortcuts import render
 from  rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import User, UserProfile,Hackathon, HackathonParticipant, Team,TeamMember,Project, ChatMessage
-from .serializers import UserProfileSerializer,CreateUserSerializer, HackathonSerializer,HackathonParticipantSerializer,TeamSerializer,TeamMemberSerializer,ProjectSerializer,MessageSerializer
+from .serializers import UserProfileSerializer,CreateUserSerializer, HackathonSerializer,HackathonParticipantSerializer,TeamSerializer,TeamMemberSerializer,ProjectSerializer,MessageSerializer,HackathonResultSerializer
 from rest_framework import status,viewsets,generics
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django.db.models import F
@@ -284,6 +284,65 @@ class ProjectUpdateAPIView(generics.RetrieveUpdateAPIView):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         return Response(serializer.data)
+
+
+# class HackathonResultAPIView(generics.RetrieveUpdateAPIView):
+#     queryset = Hackathon.objects.all()
+#     serializer_class = HackathonResultSerializer
+
+
+
+from rest_framework import permissions
+from rest_framework.exceptions import PermissionDenied
+
+class IsHackathonCreatorOrReadOnly(permissions.BasePermission):
+    """
+    Custom permission to only allow the creator of a hackathon to edit it.
+    """
+
+    def has_object_permission(self, request, view, obj):
+        # Read permissions are allowed to any request
+        if request.method in permissions.SAFE_METHODS:
+            return True
+
+        # Write permissions are only allowed to the creator of the hackathon
+        return obj.organizers.filter(id=request.user.id).exists()
+
+class HackathonResultAPIView(generics.RetrieveUpdateAPIView):
+    queryset = Hackathon.objects.all()
+    serializer_class = HackathonResultSerializer
+    permission_classes = [IsHackathonCreatorOrReadOnly]
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        if not instance.organizers.filter(id=request.user.id).exists():
+            raise PermissionDenied("You are not allowed to update hackathon results.")
+        return super().update(request, *args, **kwargs)
+
+
+
+# from django.core.mail import send_mail
+# from django.template.loader import render_to_string
+# from django.utils.html import strip_tags
+
+# def send_registration_email(user_email, hackathon_title):
+#     # Load email template
+#     html_message = render_to_string('registration_email_template.html', {'hackathon_title': hackathon_title})
+#     plain_message = strip_tags(html_message)  # Strip HTML tags for plain text version
+
+#     # Send email
+#     send_mail(
+#         subject='Registration Confirmation for {}'.format(hackathon_title),
+#         message=plain_message,
+#         html_message=html_message,
+#         from_email='your@example.com',  # Sender's email address
+#         recipient_list=[user_email],  # List of recipient email addresses
+#         fail_silently=False,
+#     )
+
+
+
+
 
 
 
