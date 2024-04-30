@@ -79,7 +79,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(_("Last Name"), max_length=100)
     email = models.EmailField(_("Email Address"), max_length=254, unique=True)
     google_id = models.CharField(_("Google ID"), max_length=100, blank=True, null=True)
-    profile_picture = models.URLField(_("Profile Picture"), blank=True, null=True)
+    profile_picture = models.ImageField(_("Profile Picture"), blank=True, null=True)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     date_joined = models.DateTimeField(auto_now_add=True)
@@ -114,3 +114,99 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.email
+
+
+
+class Hackathon(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    what_to_build = models.TextField()
+    what_to_submit = models.TextField()
+    prize_structure = models.TextField()
+    total_prize = models.DecimalField(max_digits=10, decimal_places=2)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    registration_deadline = models.DateTimeField()
+    organizers = models.ManyToManyField(User, related_name='organized_hackathons')
+    website_url = models.URLField()
+    location = models.CharField(max_length=255, blank=True, null=True)
+    registration_fee = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    submission_formats = models.CharField(max_length=255, choices=(
+        ('GitHub Repo', 'GitHub Repository'),
+        ('Demo URL', 'Demo URL'),
+        ('Video Pitch', 'Video Pitch'),
+        ('Presentation', 'Presentation'),
+    ))
+    tags = models.CharField(max_length=255)
+    front_image = models.ImageField(upload_to='hackathon/images/',blank=True,null=True)
+    banner_image = models.ImageField(upload_to='hackathon/images/',blank=True,null=True)
+
+
+    def __str__(self):
+        return self.title
+
+
+class HackathonParticipant(models.Model):
+    PARTICIPATION_TYPE_CHOICES = [
+        ('Solo', 'Solo'),
+        ('Team', 'Team'),
+    ]
+    hackathon = models.ForeignKey(Hackathon, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    team = models.ForeignKey('Team', on_delete=models.CASCADE, null=True)
+    has_created_team = models.BooleanField(default=False)
+    participation_type = models.CharField(max_length=10, choices=PARTICIPATION_TYPE_CHOICES)
+
+class Team(models.Model):
+    hackathon = models.ForeignKey(Hackathon, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+
+class TeamMember(models.Model):
+    ROLE_CHOICES = [
+        ('Member', 'Member'),
+        ('Leader', 'Leader'),
+    ]
+    team = models.ForeignKey(Team, on_delete=models.CASCADE,null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    hackathon = models.ForeignKey(Hackathon, on_delete=models.CASCADE)    
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES)
+
+class Project(models.Model):
+    hackathon = models.ForeignKey(Hackathon, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100,null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    github_repo_link = models.URLField(null=True, blank=True)
+    video_link = models.URLField(null=True, blank=True)
+    live_website_link = models.URLField(null=True, blank=True)
+    team = models.ForeignKey('Team', on_delete=models.CASCADE, null=True)
+
+class Result(models.Model):
+    
+
+
+class ChatMessage(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="user")
+    sender = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="sender")
+    reciever = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="reciever")
+
+    message = models.CharField(max_length=10000000000)
+
+    is_read = models.BooleanField(default=False)
+    date = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['date']
+        verbose_name_plural = "Message"
+
+    def __str__(self):
+        return f"{self.sender} - {self.reciever}"
+
+    @property
+    def sender_profile(self):
+        sender_profile = UserProfile.objects.get(user=self.sender)
+        return sender_profile
+    @property
+    def reciever_profile(self):
+        reciever_profile = UserProfile.objects.get(user=self.reciever)
+        return reciever_profile

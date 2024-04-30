@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 from datetime import timedelta
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,10 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-         'corsheaders',
+    'corsheaders',
     'rest_framework',
     "rest_framework_simplejwt",
     'djoser',
+     'django_extensions',
     'app',
 ]
 
@@ -134,14 +135,14 @@ AUTH_USER_MODEL = 'app.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": (
         "Bearer",
         "JWT"),
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=120),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=60),
     "SIGNING_KEY": "XmcaGCXyIQ7FtXH7CJNUajPlNf4KmVLp",
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
@@ -192,3 +193,6 @@ SITE_NAME = "Journal Bullet"
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '1022299590961-bdlphuf5ffkg3aq0njlul2ikn0d37d1k.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

@@ -54,13 +54,13 @@ const LoginPage = () => {
 
     return (
         <div className="container auth__container">
-            <h1 className="main__title">Login</h1>
     
             {activate_msg && <p className="error-message">successful{activate_msg}</p>}
             {error && <p className="error-message">{error}</p>}
             {loading && <p className="spinner"></p>}
 
                 <form className="auth__form">
+            <h1 className="main__title">Login</h1>
                     <input
                         type="text"
                         placeholder="Email"

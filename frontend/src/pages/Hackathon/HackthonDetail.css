@@ -1,0 +1,111 @@
+.main-title{
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #050505;
+    border-bottom: 1px solid #0c0c0c;
+}
+.main-title h1{
+    text-transform: uppercase;
+    margin-left: 20px;
+}
+.hackathon-image{
+    height: 80px;
+    width: 80px;
+    border-radius: 360px;
+    overflow: hidden;
+}
+
+.main-body{
+    display: flex;
+    gap:20px;
+    max-width: 1200px;
+    margin: 20px auto;
+
+}
+.hackathon-details{
+    width: 750px;
+    /* background-color: #090909; */
+}
+.hackathon-details .title{
+    margin-top: 25px;
+    font-weight: 600;
+}
+
+.detail-image{
+    height: 400px;
+    width: 750px;
+    margin-bottom: 50px;
+}
+.detail-image   img{
+    height: 400px;
+    width: 750px;
+    border-radius: 20px;
+}
+.details-tags{
+    display: flex;
+    gap:15px;
+}
+.detail-tag-item{
+    background-color: aliceblue;
+    padding: 5px 8px;
+    color:black;
+    border-radius: 8px;
+}
+
+.schedule-card{
+    width: 350px;
+    height: 400px;
+    background-color: #333232;
+    border-radius: 20px;
+    padding: 20px 30px 0 30px;
+    background-image: linear-gradient(to right bottom, #4e4e4e, #3b3b3b, #292929, #181818, #000000);
+  border-radius: 9px;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px outset rgba(255, 255, 255, 0.3);
+}
+
+
+
+.dates-detail{
+    border-left: 3px solid aqua;
+    padding-left: 10px;
+}   
+.dates-detail .date-title{
+ 
+    font-size: 15px;
+    color: #cac8c8;
+    text-transform: uppercase;
+}
+.dates-detail .date-description{
+    margin-bottom: 8px;
+    font-size: 25px;
+    font-weight: 700;
+}
+.registration-close{
+    height: 40px;
+    margin-top: 30px;
+      /* width: 200px; */
+    /* margin: 0 auto; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.registration-close-box{
+    background-color: antiquewhite;
+    color:black;
+    padding: 5px 20px;
+    border-radius: 20px;
+}
+.apply{
+    margin-top: 30px;
+    padding:10px 10px;
+    width: 100%;
+    background-color: aqua;
+    color: black;
+    font-size: 20px;
+    border-radius: 20px;
+}

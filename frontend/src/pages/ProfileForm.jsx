@@ -2,8 +2,9 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
-
+import {Link, useNavigate } from 'react-router-dom';
 const ProfileForm = () => {
+
     const [formData, setFormData] = useState({
         user: null, // Change to user ID
         skills: [],
@@ -12,7 +13,7 @@ const ProfileForm = () => {
         company: '',
         careerStart: ''
     });
-
+    const navigate = useNavigate();
     const skillsList = ['HTML', 'CSS', 'JavaScript', 'Python', 'Java', 'React', 'Angular', 'Node.js'];
 
     const handleChange = (e) => {
@@ -28,13 +29,27 @@ const ProfileForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Fetch user ID from localStorage or context
-            const userId = localStorage.getItem('userId');
-            const updatedFormData = { ...formData, user: 1 };
-            
-            const res = await axios.post('http://127.0.0.1:8000/api/create-profile/', updatedFormData);
+            // const userId = localStorage.getItem('userId');
+
+            const accessToken = localStorage.getItem('token'); // Assuming you store the access token in localStorage
+            const config = {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            };
+            const userResponse = await axios.get('http://127.0.0.1:8000/api/v1/auth/users/me/', config);
+            const userId = userResponse.data.id;
+            const updatedFormData = { ...formData, user: userId }; 
+                       const res = await axios.post('http://127.0.0.1:8000/api/v1/user-profiles/', updatedFormData, config);
             console.log(res.data);
-            // Handle success
+            if (res.status === 201) {
+                console.log('User profile created successfully');
+                // Handle success (e.g., redirect to another page)
+            } else {
+                console.log('User profile already exists');
+                navigate("/profile");
+                // Handle the case where a profile already exists (e.g., display a message to the user)
+            }
         } catch (error) {
             console.error(error);
             // Handle error
