@@ -47,10 +47,10 @@ const HackathonDetail = () => {
         
         // Check if user_response.data exists before accessing its properties
         const loggedInUserId = user_response.data ? user_response.data.id : null;
-        
+        console.log(participate_response.data)
         setIsUserOrganizer(response.data.organizers[0] === parseInt(loggedInUserId));
         setIsUserRegistered(participate_response.data.some(participant => 
-          (participant.user.id === loggedInUserId && 
+          (participant.user === loggedInUserId && 
           participant.hackathon === parseInt(id)) ||
           (participant.team_members.some(member => member.user.id === loggedInUserId))
         ));
@@ -209,7 +209,7 @@ const HackathonDetail = () => {
 
       
 
-      {/* <p>Start Date: {hackathon.start_date}</p>
+      <p>Start Date: {hackathon.start_date}</p>
       <p>End Date: {hackathon.end_date}</p>
       <p>Registration Deadline: {hackathon.registration_deadline}</p>
       <p>Organizers: {hackathon.organizers.map(organizer => organizer.username).join(', ')}</p>
@@ -217,9 +217,9 @@ const HackathonDetail = () => {
       <p>Location: {hackathon.location}</p>
       <p>Registration Fee: {hackathon.registration_fee}</p>
       <p>Submission Formats: {hackathon.submission_formats}</p>
-      <p>Tags: {hackathon.tags}</p> */}
+      <p>Tags: {hackathon.tags}</p> 
 
-      {/* {isUserRegistered ? (
+     {isUserRegistered ? (
         //  <ManageParticipant hackathonId={id} />
         <button onClick={() => handleNavigation(hackathon.id)}>Navigate to Participated</button>
 
@@ -237,7 +237,7 @@ const HackathonDetail = () => {
       </>
     )}
   </>
-)} */}
+)}
 
      
       {/* Add more details as needed */}

@@ -182,6 +182,8 @@ DEFAULT_FROM_EMAIL = "info@journal-bullet.com"
 DOMAIN = "localhost:3000"
 SITE_NAME = "Journal Bullet"
 
+
+
 # EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 # EMAIL_USE_TLS = True
 # EMAIL_HOST = "smtp.gmail.com"

@@ -71,8 +71,33 @@ class UserHackathonsAPIView(generics.ListAPIView):
         user_id = self.kwargs['user_id']
         return Hackathon.objects.filter(organizers=user_id)
 
+class UserParticipatedHackathonAPIView(generics.ListAPIView):
+    serializer_class = HackathonSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        # Filter hackathons where the user is a team member
+        return Hackathon.objects.filter(teammember__user=user)
+
+
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from rest_framework.response import Response
+from rest_framework import status   
+
+def send_registration_email(user_email):
+    message = "Thank you for registering for the hackathon."
+    send_mail(
+        subject='Registration Confirmation',
+        message=message,
+        from_email='info@journal-bullet.com',
+        recipient_list=[user_email],
+        fail_silently=False,
+    )
 class HackathonParticipantAPIView(generics.ListCreateAPIView):
-    # queryset = HackathonParticipant.objects.all()
+    queryset = HackathonParticipant.objects.all()
     serializer_class = HackathonParticipantSerializer
 
     def get_queryset(self):
@@ -92,6 +117,8 @@ class HackathonParticipantAPIView(generics.ListCreateAPIView):
         serializer = self.get_serializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
+        send_registration_email(request.user.email)
+
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
@@ -127,6 +154,7 @@ class TeamCreateView(generics.CreateAPIView):
         user = request.user
         hackathon_id = kwargs.get('hackathon_id')
         data = request.data
+        print("dfdsf",user)
 
         # Check if the user has already participated in the hackathon
         participants = HackathonParticipant.objects.filter(user=user, hackathon_id=hackathon_id)
@@ -162,6 +190,7 @@ class TeamAddMemberView(generics.CreateAPIView):
         user = request.user
         hackathon_id = kwargs.get('hackathon_id')
         data = request.data
+        print("sds",user)
 
         # Check if the user has already participated in the hackathon
         participants = HackathonParticipant.objects.filter(user=user, hackathon_id=hackathon_id)
@@ -191,7 +220,7 @@ class TeamAddMemberView(generics.CreateAPIView):
 
         role = 'Member'  # Assuming newly added members are regular members
         TeamMember.objects.create(team=team, user=member_user, role=role, hackathon_id=hackathon_id)
-
+        send_registration_email(email)
         return Response({'message': f'User {member_user.email} added to the team successfully'}, status=status.HTTP_201_CREATED)
 
 
@@ -318,27 +347,6 @@ class HackathonResultAPIView(generics.RetrieveUpdateAPIView):
         if not instance.organizers.filter(id=request.user.id).exists():
             raise PermissionDenied("You are not allowed to update hackathon results.")
         return super().update(request, *args, **kwargs)
-
-
-
-# from django.core.mail import send_mail
-# from django.template.loader import render_to_string
-# from django.utils.html import strip_tags
-
-# def send_registration_email(user_email, hackathon_title):
-#     # Load email template
-#     html_message = render_to_string('registration_email_template.html', {'hackathon_title': hackathon_title})
-#     plain_message = strip_tags(html_message)  # Strip HTML tags for plain text version
-
-#     # Send email
-#     send_mail(
-#         subject='Registration Confirmation for {}'.format(hackathon_title),
-#         message=plain_message,
-#         html_message=html_message,
-#         from_email='your@example.com',  # Sender's email address
-#         recipient_list=[user_email],  # List of recipient email addresses
-#         fail_silently=False,
-#     )
 
 
 

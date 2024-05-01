@@ -137,6 +137,14 @@ const CreateHackathonForm = () => {
             <label htmlFor="tags">Tags:</label>
             <input type="text" id="tags" name="tags" value={formData.tags} onChange={handleChange} required />
           </div>
+          <div className="form-class">
+            <label htmlFor="front_image">Front Image:</label>
+            <input type="file" id="front_image" name="front_image" onChange={handleImageChange} required />
+          </div>
+          <div className="form-class">
+            <label htmlFor="banner_image">Banner Image:</label>
+            <input type="file" id="banner_image" name="banner_image" onChange={handleImageChange} required />
+          </div>
           <button type="submit">Create Hackathon</button>
         </form>
       </div>

@@ -144,7 +144,7 @@ const ManageParticipant = () => {
               <label htmlFor="teamName">Team Name:</label>
               <input type="text" id="teamName" value={teamName} onChange={handleTeamNameChange} />
               <br />
-              {isLeader ? <button onClick={handleCreateTeam}>Create Team</button> : null}
+               <button onClick={handleCreateTeam}>Create Team</button>
             </>
           ) : (
             <>

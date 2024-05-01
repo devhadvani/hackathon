@@ -35,9 +35,9 @@ const HackathonList = () => {
   return (
 <div className="articles">
         {hackathons.map(hackathon => (
-    
+            <Link to={`/hackathons/${hackathon.id}`} className="card-link">
           <HackathonCard key={hackathon.id} hackathon={hackathon} />
-          // </Link>
+          </Link>
         ))}
       </div> 
   );

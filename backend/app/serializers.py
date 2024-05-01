@@ -58,7 +58,7 @@ class HackathonParticipantSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         ret = super().to_representation(instance)
-        ret['user'] = CreateUserSerializer(instance.user).data
+        # ret['user'] = CreateUserSerializer(instance.user).data
         # ret['project_info'] = ProjectSerializer()
 
         return ret
