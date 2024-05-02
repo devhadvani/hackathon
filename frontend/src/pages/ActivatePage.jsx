@@ -23,7 +23,7 @@ const ActivatePage = () => {
             const response = await axios.post(ACTIVATE_URL, userData, config);
             setActivationStatus(response.data.detail);
             console.log(response.data.detail);
-            // If activation is successful, navigate to the login page
+            // If activation is successful, navigate to the login page. ok
             navigate('/login');
         } catch (error) {
             console.log(error);
