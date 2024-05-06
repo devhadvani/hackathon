@@ -77,7 +77,6 @@ class UserParticipatedHackathonAPIView(generics.ListAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        # Filter hackathons where the user is a team member using teakke
         return Hackathon.objects.filter(teammember__user=user)
 
 from django.core.mail import send_mail
