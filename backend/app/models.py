@@ -213,3 +213,6 @@ class ChatMessage(models.Model):
     def reciever_profile(self):
         reciever_profile = UserProfile.objects.get(user=self.reciever)
         return reciever_profile
+
+
+#end of this
